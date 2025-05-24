@@ -1,0 +1,11 @@
+[package]
+name = "heartxecutor"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+amia-packet = { git = "https://github.com/yuvlian/amia-codec", package = "amia-packet", rev = "2cdfba2" }
+eframe = "0.31.1"
+egui = "0.31.1"
+prost = "0.13.5"
+rfd = "0.15.3"
