@@ -2,6 +2,8 @@ i dont like using chat to run lua
 
 you can use this as the serverside implementation reference:
 
+(do note that this thing is specifically designed for my ps which has 0 auth/encryption/yada-yada and uses TCP)
+
 ```rust
 static SHOULD_SEND_LUA: AtomicBool = AtomicBool::new(false);
 static LUA_CONTENT: LazyLock<Mutex<String>> = LazyLock::new(|| Mutex::new(String::with_capacity(2000)));
