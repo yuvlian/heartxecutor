@@ -5,9 +5,9 @@ mod proto;
 use eframe::egui;
 use rfd::FileDialog;
 
+use amia_packet::net_packet::NetPacket;
 use prost::Message;
 use proto::{ClientUploadData, PlayerHeartBeatCsReq};
-use amia_packet::net_packet::NetPacket;
 use std::io::Write;
 use std::net::TcpStream;
 
@@ -15,7 +15,14 @@ const MAGIC_TIME: u64 = 11112222;
 const PLAYER_HEART_BEAT_CS_REQ_CMD_ID: u16 = 90;
 
 fn main() -> eframe::Result<()> {
-    let options = eframe::NativeOptions::default();
+    let options = eframe::NativeOptions {
+        viewport: egui::ViewportBuilder::default()
+            .with_inner_size(egui::vec2(1200.0, 700.0))
+            .with_resizable(true)
+            .with_decorations(true),
+        centered: true,
+        ..Default::default()
+    };
     eframe::run_native(
         "heartxecutor",
         options,
@@ -59,12 +66,6 @@ impl eframe::App for MyApp {
                     }
                 }
             }
-            ui.add_sized(
-                [ui.available_width(), 200.0],
-                egui::TextEdit::multiline(&mut self.file_content),
-            );
-
-            ui.separator();
 
             ui.horizontal(|ui| {
                 if ui.button("SEND").clicked() {
@@ -108,6 +109,19 @@ impl eframe::App for MyApp {
             if let Some(result) = &self.send_result {
                 ui.label(result);
             }
+
+            ui.separator();
+
+            egui::ScrollArea::vertical()
+                .auto_shrink([false; 2])
+                .show(ui, |ui| {
+                    ui.add(
+                        egui::TextEdit::multiline(&mut self.file_content)
+                            .code_editor()
+                            .desired_rows(20)
+                            .desired_width(f32::INFINITY),
+                    );
+                });
         });
     }
 }
